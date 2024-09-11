@@ -4,15 +4,19 @@ import OptionsComponent from "../OptionComponents"
 
 import "./index.css"
 
-import { Button, ConfigProvider, Form, Select } from "antd"
+import { Button, ConfigProvider, Form, Input, Select } from "antd"
 
 import { sendToBackground } from "@plasmohq/messaging"
 
-function getBackgroundMessage(): Promise<{ type: string; options: any }> {
+function getBackgroundMessage({
+  action
+}: {
+  action: string
+}): Promise<{ type: string; options: any }> {
   return sendToBackground({
     name: "ping",
     body: {
-      action: "get"
+      action: action
     }
   })
 }
@@ -22,6 +26,7 @@ export function PopupContent() {
     options: {}
   })
   const [form] = Form.useForm()
+  const [form2] = Form.useForm()
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -33,10 +38,12 @@ export function PopupContent() {
     }
   }
   useEffect(() => {
-    getBackgroundMessage().then((TO) => {
-      console.log("TOOOO", TO)
+    getBackgroundMessage({ action: "get" }).then((TO) => {
       setInit(TO)
       form.setFieldsValue(TO)
+    })
+    getBackgroundMessage({ action: "getNewTab" }).then((homePage) => {
+      form2.setFieldsValue({ homePage: homePage })
     })
   }, [])
   const type = Form.useWatch("type", form)
@@ -50,7 +57,6 @@ export function PopupContent() {
       }
     })
   }
-  console.log("type", type)
   return (
     <ConfigProvider
       theme={{
@@ -103,6 +109,30 @@ export function PopupContent() {
               ]}></Select>
           </Form.Item>
           <OptionsComponent type={type} />
+          <Form.Item noStyle>
+            <Button type="primary" htmlType="submit">
+              保存
+            </Button>
+          </Form.Item>
+        </Form>
+        <div className="mt-[12px]">首页地址</div>
+        <Form
+          {...formItemLayout}
+          name="setting"
+          form={form2}
+          onFinish={(values) => {
+            sendToBackground({
+              name: "ping",
+              body: {
+                action: "setNewTab",
+                payload: values?.homePage
+              }
+            })
+          }}
+          scrollToFirstError>
+          <Form.Item name="homePage" label="首页跳转地址">
+            <Input></Input>
+          </Form.Item>
           <Form.Item noStyle>
             <Button type="primary" htmlType="submit">
               保存

@@ -9,24 +9,21 @@ export const config: PlasmoCSConfig = {
   run_at: 'document_end'
 }
 let nowCursor;
-setTimeout(() => {
+window.addEventListener('load', function () {
   init();
-}, 0)
+});
 listen((r) => {
   refresh(r.body)
 })
 
 function refresh(params) {
   const { type, options } = params || {};
-  console.log(type, options, window?.createMouseCanvas, window?.cursoreffects);
-
   const op = options;
 
   nowCursor?.destroy?.();
   if (type !== "none") {
     const cv = document.getElementById("vixcityCanvas");
     const vd = document.getElementById("vixcityDiv");
-    console.log(cv, vd)
     cv && cv.remove();
     vd && vd.remove();
     if ((type || "").startsWith("mouse-")) {
