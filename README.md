@@ -1,8 +1,6 @@
-This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
+这是一个鼠标特效的chrome扩展，可以自定义鼠标特效。
 
 ## Getting Started
-
-First, run the development server:
 
 ```bash
 pnpm dev
@@ -10,11 +8,7 @@ pnpm dev
 npm run dev
 ```
 
-Open your browser and load the appropriate development build. For example, if you are developing for the chrome browser, using manifest v3, use: `build/chrome-mv3-dev`.
-
-You can start editing the popup by modifying `popup.tsx`. It should auto-update as you make changes. To add an options page, simply add a `options.tsx` file to the root of the project, with a react component default exported. Likewise to add a content page, add a `content.ts` file to the root of the project, importing some module and do some logic, then reload the extension on your browser.
-
-For further guidance, [visit our Documentation](https://docs.plasmo.com/)
+打开浏览器并加载适当的开发版本。例如，如果您正在使用清单v3为chrome浏览器进行开发，请使用:` build/chrome-mv3-dev`。
 
 ## Making production build
 
@@ -26,8 +20,6 @@ pnpm build
 npm run build
 ```
 
-This should create a production bundle for your extension, ready to be zipped and published to the stores.
-
 ## Submit to the webstores
 
-The easiest way to deploy your Plasmo extension is to use the built-in [bpp](https://bpp.browser.market) GitHub action. Prior to using this action however, make sure to build your extension and upload the first version to the store to establish the basic credentials. Then, simply follow [this setup instruction](https://docs.plasmo.com/framework/workflows/submit) and you should be on your way for automated submission!
+部署Plasmo扩展最简单的方法是使用内置的[bpp](https://bpp . browser . market)GitHub操作。但是，在使用此操作之前，请确保构建您的扩展，并将第一个版本上传到商店以建立基本凭证。然后，只需按照[此设置说明](https://docs.plasmo.com/framework/workflows/submit)进行操作，您就可以开始自动提交了！
