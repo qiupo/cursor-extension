@@ -4,25 +4,42 @@ console.log(
     "Live now; make now always the most precious time. Now will never come again."
 )
 let newTab = 'https://www.google.com/'
-let TO = {
-    type: "ghostCursor",
-    options: "",
-};
 const storage = new Storage()
 
-storage.get("cursorOptions").then((result: any) => {
-    if (result?.cursorOptions) {
-        TO = result?.cursorOptions;
-    }
-})
+// storage.get("cursorOptions").then((result: any) => {
+//     if (result) {
+//         TO = result;
+//     }
+// })
 async function saveTO(t) {
-    TO = t;
-    // chrome.storage.sync.set({ cursorOptions: t });
-    await storage.set("cursorOptions", t)
-    sendToContentScript({
-        name: 'set',
-        body: t
-    });
+    storage.get("cursorOptions").then(async (result: any) => {
+        console.log('xxx', result)
+        await storage.set("cursorOptions", {
+            ...(result || {}),
+            [t.type]: t.options,
+            activeType: t.type
+        })
+        sendToContentScript({
+            name: 'set',
+            body: t
+        });
+    })
+
+}
+
+async function getTO(callback) {
+    const result: any = await storage.get("cursorOptions") // "value"
+    console.log('xxx', result)
+    if (result) {
+        callback({
+            type: result.activeType,
+            options: result[result.activeType]
+        });
+    } else {
+        callback({
+            type: 'ghostCursor'
+        })
+    }
 }
 
 async function saveNewTab(t) {
@@ -33,15 +50,9 @@ async function saveNewTab(t) {
 const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
     const request = req.body;
     if (request.action === "init") {
-        const result: any = await storage.get("cursorOptions") // "value"
-        if (result) {
-            TO = result;
-            res.send(result);
-        } else {
-            res.send({})
-        }
+        getTO(res.send)
     } else if (request.action === "get") {
-        res.send(TO);
+        getTO(res.send)
     } else if (request.action === "set") {
         await saveTO(request.payload);
     } else if (request.action === "setNewTab") {

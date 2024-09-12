@@ -4,10 +4,79 @@ import OptionsComponent from "../OptionComponents"
 
 import "./index.css"
 
-import { Button, ConfigProvider, Form, Input, Select } from "antd"
+import { Button, ConfigProvider, Form, Input, Select, Space } from "antd"
 
 import { sendToBackground } from "@plasmohq/messaging"
+import { Storage } from "@plasmohq/storage"
 
+const defaultOptions = {
+  ghostCursor: undefined,
+  bubbleCursor: undefined,
+  clockCursor: {
+    dateColor: "#ef8a17",
+    faceColor: "#F75590",
+    secondsColor: "#FBD87F",
+    minutesColor: "#FBD87F",
+    hoursColor: "#10FFCB"
+  },
+  rainbowCursor: {
+    length: 10,
+    colors: [
+      "#FF0000",
+      "#FF7F00",
+      "#FFFF00",
+      "#00FF00",
+      "#0000FF",
+      "#4B0082",
+      "#9400D3"
+    ],
+    size: 2
+  },
+  fairyDustCursor: {
+    colors: ["#FF6347", "#FFD700", "#7CFC00", "#00BFFF", "#9400D3"]
+  },
+  snowflakeCursor: undefined,
+  trailingCursor: {
+    particles: 15,
+    rate: 0.8,
+    baseImageSrc: ""
+  },
+  followingDotCursor: { color: ["#323232a6"] },
+  textFlag: {
+    text: "摸鱼",
+    color: ["#FF0000"]
+  },
+  springyEmojiCursor: { emoji: "🐶🤷‍♂️🦅" },
+  emojiCursor: {
+    emoji: [
+      "🔥",
+      "🐬",
+      "🦆",
+      "🫥",
+      "😶‍🌫️",
+      "🥶",
+      "🤯",
+      "🤔",
+      "🫢",
+      "🫠",
+      "🤫",
+      "🫡",
+      "🫣"
+    ]
+  },
+  "mouse-1": { color: "#ef672a" },
+  "mouse-2": { color: "#ef672a" },
+  "mouse-3": { color: "#ef672a" },
+  "mouse-4": { color: "#ef672a" },
+  "mouse-5": { color: "#ef672a" },
+  "mouse-6": { color: "#ef672a" },
+  "mouse-7": { color: "#ef672a" },
+  "mouse-8": { color: "#ef672a" },
+  "mouse-9": { color: "#ef672a" },
+  "mouse-10": { color: "#ef672a" },
+  "mouse-11": { color: "#ef672a" }
+  //   "mouse-12": { color: "#ef672a" },
+}
 function getBackgroundMessage({
   action
 }: {
@@ -21,10 +90,6 @@ function getBackgroundMessage({
   })
 }
 export function PopupContent() {
-  const [init, setInit] = useState({
-    type: "none",
-    options: {}
-  })
   const [form] = Form.useForm()
   const [form2] = Form.useForm()
   const formItemLayout = {
@@ -39,7 +104,6 @@ export function PopupContent() {
   }
   useEffect(() => {
     getBackgroundMessage({ action: "get" }).then((TO) => {
-      setInit(TO)
       form.setFieldsValue(TO)
     })
     getBackgroundMessage({ action: "getNewTab" }).then((homePage) => {
@@ -47,6 +111,12 @@ export function PopupContent() {
     })
   }, [])
   const type = Form.useWatch("type", form)
+  const storage = new Storage()
+  useEffect(() => {
+    storage.get("cursorOptions").then((res) => {
+      form.setFieldValue("options", res[type] || defaultOptions[type])
+    }) // "value"
+  }, [type])
   const onFinish = (values: any) => {
     console.log("Received values of form: ", values)
     sendToBackground({
@@ -75,7 +145,6 @@ export function PopupContent() {
           form={form}
           name="setting"
           onFinish={onFinish}
-          initialValues={init}
           style={{ maxWidth: 600 }}
           scrollToFirstError>
           <Form.Item name="type" label="样式类型">
@@ -110,12 +179,21 @@ export function PopupContent() {
           </Form.Item>
           <OptionsComponent type={type} />
           <Form.Item noStyle>
-            <Button type="primary" htmlType="submit">
-              保存
-            </Button>
+            <Space>
+              <Button type="primary" htmlType="submit">
+                保存
+              </Button>
+              <Button
+                htmlType="button"
+                onClick={() => {
+                  form.setFieldValue("options", defaultOptions[type])
+                }}>
+                重置
+              </Button>
+            </Space>
           </Form.Item>
         </Form>
-        <div className="mt-[12px]">首页地址</div>
+        {/* <div className="mt-[12px]">首页地址</div>
         <Form
           {...formItemLayout}
           name="setting"
@@ -138,7 +216,7 @@ export function PopupContent() {
               保存
             </Button>
           </Form.Item>
-        </Form>
+        </Form> */}
       </div>
     </ConfigProvider>
   )

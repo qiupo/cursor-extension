@@ -1,4 +1,7 @@
 import { Form } from "antd"
+import { useEffect } from "react"
+
+import { sendToBackground } from "@plasmohq/messaging"
 
 import ClockCursor from "./components/ClockCursor"
 import EmojiCursor from "./components/EmojiCursor"
@@ -10,58 +13,7 @@ import SpringyEmojiCursor from "./components/SpringyEmojiCursor"
 import TextFlag from "./components/TextFlag"
 import TrailingCursor from "./components/TrailingCursor"
 
-const defaultOptions = {
-  ghostCursor: undefined,
-  bubbleCursor: undefined,
-  clockCursor: {
-    dateColor: "#ef8a17",
-    faceColor: "#F75590",
-    secondsColor: "#FBD87F",
-    minutesColor: "#FBD87F",
-    hoursColor: "#10FFCB"
-  },
-  rainbowCursor: {
-    length: 10,
-    colors: [
-      "#FF0000",
-      "#FF7F00",
-      "#FFFF00",
-      "#00FF00",
-      "#0000FF",
-      "#4B0082",
-      "#9400D3"
-    ],
-    size: 2
-  },
-  fairyDustCursor: {
-    colors: ["#FF6347", "#FFD700", "#7CFC00", "#00BFFF", "#9400D3"]
-  },
-  snowflakeCursor: undefined,
-  trailingCursor: {
-    particles: 15,
-    rate: 0.8,
-    baseImageSrc: ""
-  },
-  followingDotCursor: { color: ["#323232a6"] },
-  textFlag: {
-    text: "摸鱼",
-    color: ["#FF0000"]
-  },
-  springyEmojiCursor: { emoji: "🤷‍♂️" },
-  emojiCursor: { emoji: ["🔥", "🐬", "🦆"] },
-  "mouse-1": { color: "#ef672a" },
-  "mouse-2": { color: "#ef672a" },
-  "mouse-3": { color: "#ef672a" },
-  "mouse-4": { color: "#ef672a" },
-  "mouse-5": { color: "#ef672a" },
-  "mouse-6": { color: "#ef672a" },
-  "mouse-7": { color: "#ef672a" },
-  "mouse-8": { color: "#ef672a" },
-  "mouse-9": { color: "#ef672a" },
-  "mouse-10": { color: "#ef672a" },
-  "mouse-11": { color: "#ef672a" }
-  //   "mouse-12": { color: "#ef672a" },
-}
+
 export type optionsType =
   | "ghostCursor"
   | "bubbleCursor"
@@ -86,8 +38,6 @@ export type optionsType =
   | "mouse-10"
   | "mouse-11"
 export default function OptionsComponent({ type }: { type: optionsType }) {
-  const form = Form.useFormInstance()
-  form.setFieldValue("options", defaultOptions[type])
   const render = (type: optionsType) => {
     switch (type) {
       case "ghostCursor":
