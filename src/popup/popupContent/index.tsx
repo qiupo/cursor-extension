@@ -10,7 +10,14 @@ import { sendToBackground } from "@plasmohq/messaging"
 import { Storage } from "@plasmohq/storage"
 
 const defaultOptions = {
-  ghostCursor: undefined,
+  characterCursor: {
+    colors: ["#de0b90", "#e23434", "#fc5d5d", "#00ff51", "#fac937"],
+    characters: ["h", "e", "l", "l", "0"],
+    font: "15px serif"
+  },
+  ghostCursor: {
+    randomDelay: true
+  },
   bubbleCursor: undefined,
   clockCursor: {
     dateColor: "#ef8a17",
@@ -35,7 +42,9 @@ const defaultOptions = {
   fairyDustCursor: {
     colors: ["#FF6347", "#FFD700", "#7CFC00", "#00BFFF", "#9400D3"]
   },
-  snowflakeCursor: undefined,
+  snowflakeCursor: {
+    icon: ["❄️"]
+  },
   trailingCursor: {
     particles: 15,
     rate: 0.8,
@@ -91,7 +100,7 @@ function getBackgroundMessage({
 }
 export function PopupContent() {
   const [form] = Form.useForm()
-  const [form2] = Form.useForm()
+  // const [form2] = Form.useForm()
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -106,9 +115,9 @@ export function PopupContent() {
     getBackgroundMessage({ action: "get" }).then((TO) => {
       form.setFieldsValue(TO)
     })
-    getBackgroundMessage({ action: "getNewTab" }).then((homePage) => {
-      form2.setFieldsValue({ homePage: homePage })
-    })
+    // getBackgroundMessage({ action: "getNewTab" }).then((homePage) => {
+    //   form2.setFieldsValue({ homePage: homePage })
+    // })
   }, [])
   const type = Form.useWatch("type", form)
   const storage = new Storage()

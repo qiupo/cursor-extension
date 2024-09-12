@@ -7,14 +7,17 @@ import ClockCursor from "./components/ClockCursor"
 import EmojiCursor from "./components/EmojiCursor"
 import FairyDustCursor from "./components/FairyDustCursor"
 import FollowingDotCursor from "./components/FollowingDotCursor"
+import GhostCursor from "./components/GhostCursor"
 import MouseCursor from "./components/MouseCursor"
 import RainbowCursor from "./components/RainbowCursor"
+import SnowflakeCursor from "./components/SnowflakeCursor"
 import SpringyEmojiCursor from "./components/SpringyEmojiCursor"
 import TextFlag from "./components/TextFlag"
 import TrailingCursor from "./components/TrailingCursor"
-
+import CharacterCursor from "./components/CharacterCursor"
 
 export type optionsType =
+  | "characterCursor"
   | "ghostCursor"
   | "bubbleCursor"
   | "clockCursor"
@@ -40,8 +43,10 @@ export type optionsType =
 export default function OptionsComponent({ type }: { type: optionsType }) {
   const render = (type: optionsType) => {
     switch (type) {
+      case "characterCursor":
+        return <CharacterCursor />
       case "ghostCursor":
-        return null
+        return <GhostCursor />
       case "bubbleCursor":
         return null
       case "clockCursor":
@@ -51,7 +56,7 @@ export default function OptionsComponent({ type }: { type: optionsType }) {
       case "fairyDustCursor":
         return <FairyDustCursor />
       case "snowflakeCursor":
-        return null
+        return <SnowflakeCursor />
       case "trailingCursor":
         return <TrailingCursor />
       case "followingDotCursor":

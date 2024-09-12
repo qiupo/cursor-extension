@@ -1130,7 +1130,7 @@ window.cursoreffects = (function (t) {
         i,
         o = t && t.element,
         s = o || document.body,
-        h = ["❄️"],
+        h = t.icon || ["❄️"],
         c = window.innerWidth,
         l = window.innerHeight,
         a = { x: c / 2, y: c / 2 },
