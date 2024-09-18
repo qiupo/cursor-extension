@@ -7,6 +7,11 @@
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
+    "build:firefox2": "plasmo build --target=firefox-mv2",
+    "build:firefox3": "plasmo build --target=firefox-mv3",
+    "build:edge": "plasmo build --target=edge-mv3",
+    "build:brave": "plasmo build --target=brave-mv3",
+    "build:opera": "plasmo build --target=opera-mv3",
     "package": "plasmo package"
   },
   "dependencies": {
